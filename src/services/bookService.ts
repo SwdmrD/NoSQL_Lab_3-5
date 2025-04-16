@@ -64,6 +64,22 @@ export class BookService {
         return result.deletedCount > 0;
     }
 
+    async searchBooksAnd(title: string, publishYear: number): Promise<Book[]> {
+        return await this.collection.find({
+            title: { $regex: new RegExp(title, 'i') },
+            publishYear: publishYear
+        }).toArray();
+    }
+
+    async searchBooksOr(title: string, publishYear: number): Promise<Book[]> {
+        return await this.collection.find({
+            $or: [
+                { title: { $regex: new RegExp(title, 'i') } },
+                { publishYear: publishYear }
+            ]
+        }).toArray();
+    }
+
     // Агрегація даних: підрахунок книг за жанрами
     async countBooksByGenre(): Promise<any[]> {
         return await this.collection.aggregate([

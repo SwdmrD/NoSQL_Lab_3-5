@@ -6,6 +6,10 @@ import {GenreService} from './services/genreService';
 import {UserService} from "./services/userService";
 import {ObjectId} from "mongodb";
 
+/**
+ * return result.deletedCount > 0
+ * Метод повертає true, якщо хоча б один документ був видалений
+ * */
 const main = async () => {
     await connectToDatabase();
     console.log("Connected to MongoDB");
@@ -56,7 +60,7 @@ const main = async () => {
     // === BOOKS ===
     const books = [
         await bookService.create({ _id: new ObjectId("661d14f7c6c5f3095c2d1020"), title: "Назва 1", authorId: new ObjectId("661d14f7c6c5f3095c2d1011"), genreId: new ObjectId("661d14f7c6c5f3095c2d1017"), publishYear: 2024 }),
-        await bookService.create({ _id: new ObjectId("661d14f7c6c5f3095c2d1021"), title: "Назва 2", authorId: new ObjectId("661d14f7c6c5f3095c2d1013"), genreId: new ObjectId("661d14f7c6c5f3095c2d1019"), publishYear: 2024 }),
+        await bookService.create({ _id: new ObjectId("661d14f7c6c5f3095c2d1021"), title: "Назва 2", authorId: new ObjectId("661d14f7c6c5f3095c2d1013"), genreId: new ObjectId("661d14f7c6c5f3095c2d1019"), publishYear: 2025 }),
         await bookService.create({ _id: new ObjectId("661d14f7c6c5f3095c2d1022"), title: "Назва 3", authorId: new ObjectId("661d14f7c6c5f3095c2d1013"), genreId: new ObjectId("661d14f7c6c5f3095c2d1019"), publishYear: 2023 }),
     ];
 
@@ -107,6 +111,8 @@ const main = async () => {
     await reviewService.delete("661d14f7c6c5f3095c2d1024");
     console.log("All Reviews:", await reviewService.getAll());
 
+    console.log("Search books (2 parameters and) ", await bookService.searchBooksAnd("Назва",2024 ));
+    console.log("Search books (2 parameters or) ", await bookService.searchBooksOr("3", 2024 ));
     console.log("Counting books by genres:", await genreService.getBooksCountByGenre());
     console.log("Counting books by genres:", await bookService.countBooksByGenre());
     /**
