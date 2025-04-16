@@ -3,7 +3,7 @@ import {Author, Book, Review} from '../models/interfaces';
 import { connectToDatabase } from '../db/connection';
 
 export class ReviewService {
-    private collection!: Collection<Review>; // Використовуємо оператор !
+    private collection!: Collection<Review>;
 
     constructor() {
         this.initialize();
